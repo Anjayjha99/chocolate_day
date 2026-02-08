@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Chocolate Day 🍫</title>
+
+<style>
+
+body {
+    margin: 0;
+    font-family: 'Georgia', serif;
+    background: linear-gradient(to bottom, #2b0f0f, #4a1c1c);
+    color: white;
+    overflow: hidden;
+    text-align: center;
+}
+
+.container {
+    padding: 20px;
+    margin-top: 40px;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+.chocolate-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 30px;
+    padding: 0 20px;
+}
+
+/* Chocolate piece */
+.chocolate {
+    background: #5a2a2a;
+    padding: 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: 0.4s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+/* Unwrap effect */
+.chocolate::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #d8b48f;
+    transition: transform 0.5s ease;
+}
+
+.chocolate.unwrapped::before {
+    transform: translateY(-100%);
+}
+
+/* Melting effect */
+.melt {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 10px;
+    height: 0;
+    background: #3b1b1b;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    animation: drip 2s ease forwards;
+}
+
+@keyframes drip {
+    to {
+        height: 20px;
+        border-radius: 10px;
+    }
+}
+
+.message {
+    margin-top: 30px;
+    min-height: 80px;
+    padding: 0 20px;
+    font-size: 16px;
+    transition: opacity 0.5s ease;
+}
+
+/* Heart particles */
+.heart {
+    position: fixed;
+    font-size: 18px;
+    animation: floatUp 2s ease forwards;
+}
+
+@keyframes floatUp {
+    to {
+        transform: translateY(-120px) scale(1.5);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .chocolate {
+        padding: 15px;
+        font-size: 14px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Happy Chocolate Day 🍫❤️</h1>
+    <p>Unwrap something sweet… 💕</p>
+
+    <div class="chocolate-box">
+        <div class="chocolate" onclick="unwrap(this,0)">Sweet Smile</div>
+        <div class="chocolate" onclick="unwrap(this,1)">Late Nights</div>
+        <div class="chocolate" onclick="unwrap(this,2)">Your Laugh</div>
+        <div class="chocolate" onclick="unwrap(this,3)">Our Memories</div>
+        <div class="chocolate" onclick="unwrap(this,4)">My Favorite</div>
+        <div class="chocolate" onclick="unwrap(this,5)">Our Future</div>
+    </div>
+
+    <div class="message" id="messageBox"></div>
+</div>
+
+<audio id="bgMusic" src="music.mp3" loop></audio>
+
+<script>
+
+const messages = [
+"You have the sweetest smile in the world. It melts my heart every time. ❤️",
+"Those late-night talks with you are my favorite comfort. 🌙",
+"Your laugh is my favorite sound. It’s pure happiness. 💕",
+"Every memory with you is rich, warm, and unforgettable. 🍫",
+"Out of everything in this world… you are my favorite. Always. ❤️",
+"Our future together is going to be sweeter than any chocolate. ✨"
+];
+
+let musicStarted = false;
+
+function unwrap(element, index) {
+
+    if (!musicStarted) {
+        document.getElementById("bgMusic").play().catch(()=>{});
+        musicStarted = true;
+    }
+
+    element.classList.add("unwrapped");
+
+    const melt = document.createElement("div");
+    melt.classList.add("melt");
+    element.appendChild(melt);
+
+    showMessage(index);
+    explodeHearts(event.clientX, event.clientY);
+}
+
+function showMessage(index) {
+    const box = document.getElementById("messageBox");
+    box.style.opacity = 0;
+
+    setTimeout(() => {
+        box.innerText = messages[index];
+        box.style.opacity = 1;
+    }, 200);
+}
+
+function explodeHearts(x, y) {
+    for (let i = 0; i < 12; i++) {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerText = "❤️";
+        heart.style.left = x + "px";
+        heart.style.top = y + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 2000);
+    }
+}
+
+</script>
+
+</body>
+</html>
